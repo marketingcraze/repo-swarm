@@ -16,7 +16,7 @@ jobs:
       - name: Setup Mise
         uses: jdx/mise-action@v2
         with:
-          version: latest          # optional, default latest
+          version: 2025.1.0        # optional, default latest
           install: true            # runs `mise install`
           cache: true              # enables tool caching
 
