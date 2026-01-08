@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Mise
+        uses: jdx/mise-action@v2
+        with:
+          version: latest          # optional, default latest
+          install: true            # runs `mise install`
+          cache: true              # enables tool caching
+
+      - name: Verify tools
+        run: |
+          node --version
+          python --version
+          go version
+
+      - name: Run tests
+        run: |
+          npm ci
+          npm test
