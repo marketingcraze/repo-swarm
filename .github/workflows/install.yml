@@ -20,8 +20,10 @@ jobs:
           install: true            # runs `mise install`
           cache: true              # enables tool caching
 
-      - name: Setup Temporal CLI
-        uses: temporalio/setup-temporal@v1
+      - name: Install Temporal CLI
+        uses: temporalio/setup-temporal@v0
+        with:
+          version: v0.12.0
   
       - name: Verify tools
         run: |
