@@ -20,10 +20,14 @@ jobs:
           install: true            # runs `mise install`
           cache: true              # enables tool caching
 
+      - name: Setup Temporal CLI
+        uses: temporalio/setup-temporal@v1
+  
       - name: Verify tools
         run: |
           node --version
           python --version
           go version
+          temporal version
 
      
