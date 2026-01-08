@@ -30,6 +30,6 @@ jobs:
           node --version
           python --version
           go version
-          temporal version
+          temporal --version
 
      
