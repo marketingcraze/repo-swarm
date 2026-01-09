@@ -1,7 +1,7 @@
 .cursor/screenshots/
 .cursor/logs/
 src/prompts/skip_repos.json
-.env*
+# .env*
 !.env.example
 src/investigator/temp/
 /prompts/skip_repos.json
