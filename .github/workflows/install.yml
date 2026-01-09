@@ -31,6 +31,5 @@ jobs:
           python --version
           go version
           temporal --version
-          mise verify-config
 
      
