@@ -1,11 +1,11 @@
 {
-  "default": "https://github.com/ascpixi/is-odd",
+  "default": "https://github.com/marketingcraze/PWA-DEV",
   "_comment": "Available types: generic, backend, frontend, mobile, infra-as-code, libraries",
   "repositories": {
     "repo-swarm": {
-      "url": "https://github.com/marketingcraze/repo-swarm",
-      "description": "AI-powered multi-repo architecture discovery platform",
-      "type": "backend"
+      "url": "https://github.com/marketingcraze/PWA-DEV",
+      "description": "Lottosocial development repository",
+      "type": "frontend"
     },
   }
 }
