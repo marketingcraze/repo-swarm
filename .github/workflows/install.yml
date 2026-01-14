@@ -18,7 +18,7 @@ jobs:
         with:
           version: 2025.1.0        # optional, default latest
           install: true            # runs `mise install`
-          cache: true              # enables tool caching
+          cache: false              # enables tool caching
 
       - name: Install Temporal CLI
         uses: temporalio/setup-temporal@v0
