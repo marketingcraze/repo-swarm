@@ -32,5 +32,6 @@ jobs:
           go version
           temporal --version
           mise investigate-all
+          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
      
