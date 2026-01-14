@@ -27,13 +27,16 @@ jobs:
   
       - name: Verify tools
         run: |
-          temporal server start-dev
-          mise get-started
           node --version
           python --version
           go version
           temporal --version
           git --version
+
+      - name: Generate documents
+        run: |
+          temporal server start-dev
+          -- mise get-started
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
      
