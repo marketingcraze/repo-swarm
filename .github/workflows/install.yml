@@ -37,6 +37,8 @@ jobs:
       - name: Generate documents
         run: |
           mise install
+          mise exec -- pip install temporalio
+          mise exec -- python -c "import temporalio; print(temporalio.__version__)"
           mise run dev-dependencies
           mise investigate-all
           
