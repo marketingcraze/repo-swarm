@@ -27,6 +27,7 @@ jobs:
   
       - name: Verify tools
         run: |
+          ls -la
           node --version
           python --version
           go version
@@ -37,8 +38,6 @@ jobs:
         run: |
           mise install
           mise run dev-dependencies
-
-          temporal server start-dev
           mise investigate-all
           
           # temporal server start-dev
