@@ -35,6 +35,7 @@ jobs:
 
       - name: Generate documents
         run: |
+          mise install
           mise run dev-dependencies
           # temporal server start-dev
           # mise get-started
