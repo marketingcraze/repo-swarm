@@ -53,7 +53,7 @@ jobs:
     
       - name: Generate documents
         run: |
-          mise investigate-all
-          # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+         # mise investigate-all
+           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
      
