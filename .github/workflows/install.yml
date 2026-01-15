@@ -37,7 +37,9 @@ jobs:
         run: |
           mise install
           mise run dev-dependencies
-          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+
+          temporal server start-dev
+          mise investigate-all
           
           # temporal server start-dev
           # mise get-started
