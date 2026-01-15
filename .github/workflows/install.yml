@@ -24,15 +24,14 @@ jobs:
         uses: temporalio/setup-temporal@v0
         with:
           version: v0.12.0
-
-      - name: Start Temporal server (background)
-        run: |
-          temporal server start-dev --headless &
-          sleep 5
       
-      - name: Run worker
+      - name: Run Dependencies
         run: |
-          mise exec -- python src/investigate_worker.py
+          mise run dev-dependencies
+          mise exec -- pip install temporalio
+          mise exec -- python -c "import temporalio; print(temporalio.__version__)"
+          mise exec -- pip install pydantic
+          mise exec -- python -c "import pydantic; print(pydantic.__version__)"
     
       - name: Verify tools
         run: |
@@ -43,18 +42,14 @@ jobs:
           temporal --version
           git --version
 
+      - name: Start Temporal server (background)
+        run: |
+          temporal server start-dev --headless &
+          sleep 5
+          
       - name: Generate documents
         run: |
-          mise install
-          mise exec -- pip install temporalio
-          mise exec -- python -c "import temporalio; print(temporalio.__version__)"
-          mise exec -- pip install pydantic
-          mise exec -- python -c "import pydantic; print(pydantic.__version__)"
-          mise run dev-dependencies
           mise investigate-all
-          
-          # temporal server start-dev
-          # mise get-started
           # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
      
