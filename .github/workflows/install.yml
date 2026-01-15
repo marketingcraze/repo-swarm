@@ -34,7 +34,7 @@ jobs:
           mise exec -- python -c "import pydantic; print(pydantic.__version__)"
           mise exec -- pip install GitPython
           mise exec -- python -c "import git; print(git.__version__)"
-          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://x-access-token:${REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
     
       - name: Verify tools
         run: |
