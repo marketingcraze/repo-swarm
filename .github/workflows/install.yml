@@ -46,7 +46,11 @@ jobs:
         run: |
           temporal server start-dev --headless &
           sleep 5
-          
+
+      - name: Run worker
+        run: |
+          mise exec -- python src/investigate_worker.py
+    
       - name: Generate documents
         run: |
           mise investigate-all
