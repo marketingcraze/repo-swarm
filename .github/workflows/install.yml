@@ -35,8 +35,9 @@ jobs:
 
       - name: Generate documents
         run: |
-          temporal server start-dev
-          -- mise get-started
-          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          mise run dev-dependencies
+          # temporal server start-dev
+          # mise get-started
+          # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
      
