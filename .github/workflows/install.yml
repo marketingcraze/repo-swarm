@@ -5,9 +5,6 @@ on:
   push:
     branches: [main]
 
-env:
-  REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,6 +47,9 @@ jobs:
           temporal server start-dev --headless & sleep 5
           
       - name: Debug token presence (safe)
+        env:
+          REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
+
         run: |
           if [ -n "${REPOSWARM_GIT_TOKEN}" ]; then echo "REPOSWARM_GIT_TOKEN is set"; else echo "REPOSWARM_GIT_TOKEN is NOT set"; fi
           if [ -n "${GITHUB_TOKEN}" ]; then echo "GITHUB_TOKEN is set"; else echo "GITHUB_TOKEN is NOT set"; fi
