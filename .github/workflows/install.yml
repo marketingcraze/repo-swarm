@@ -35,8 +35,8 @@ jobs:
           mise exec -- python -c "import temporalio; print(temporalio.__version__)"
           mise exec -- pip install pydantic
           mise exec -- python -c "import pydantic; print(pydantic.__version__)"
-          #mise exec -- pip install GitPython
-          #mise exec -- python -c "import git; print(git.__version__)"
+          mise exec -- pip install GitPython
+          mise exec -- python -c "import git; print(git.__version__)"
           mise exec -- pip install requests
           mise exec -- python -c "import requests; print(requests.__version__)"
     
