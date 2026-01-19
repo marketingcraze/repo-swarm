@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GIT_TOKEN }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +39,6 @@ jobs:
           mise exec -- python -c "import git; print(git.__version__)"
           mise exec -- pip install requests
           mise exec -- python -c "import requests; print(requests.__version__)"
-          git config --global url."https://x-access-token:${REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
     
       - name: Verify tools
         run: |
@@ -51,7 +53,12 @@ jobs:
         run: |
           temporal server start-dev --headless &
           sleep 5
-    
+          
+      - name: Debug token presence (safe)
+        run: |
+          if [ -n "${REPOSWARM_GIT_TOKEN}" ]; then echo "REPOSWARM_GIT_TOKEN is set"; else echo "REPOSWARM_GIT_TOKEN is NOT set"; fi
+          if [ -n "${REPOSWARM_GH_PAT}" ]; then echo "REPOSWARM_GH_PAT is set"; else echo "REPOSWARM_GH_PAT is NOT set"; fi
+          
       - name: Generate documents
         run: |
           mise investigate-all
