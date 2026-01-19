@@ -5,12 +5,12 @@ on:
   push:
     branches: [main]
 
+env:
+  REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GIT_TOKEN }}
 
     steps:
       - name: Checkout
@@ -57,7 +57,6 @@ jobs:
       - name: Debug token presence (safe)
         run: |
           if [ -n "${REPOSWARM_GIT_TOKEN}" ]; then echo "REPOSWARM_GIT_TOKEN is set"; else echo "REPOSWARM_GIT_TOKEN is NOT set"; fi
-          if [ -n "${REPOSWARM_GH_PAT}" ]; then echo "REPOSWARM_GH_PAT is set"; else echo "REPOSWARM_GH_PAT is NOT set"; fi
           
       - name: Generate documents
         run: |
