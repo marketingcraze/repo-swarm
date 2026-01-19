@@ -32,13 +32,9 @@ jobs:
         run: |
           mise run dev-dependencies
           mise exec -- pip install temporalio
-          mise exec -- python -c "import temporalio; print(temporalio.__version__)"
           mise exec -- pip install pydantic
-          mise exec -- python -c "import pydantic; print(pydantic.__version__)"
           mise exec -- pip install GitPython
-          mise exec -- python -c "import git; print(git.__version__)"
           mise exec -- pip install requests
-          mise exec -- python -c "import requests; print(requests.__version__)"
     
       - name: Verify tools
         run: |
@@ -51,8 +47,7 @@ jobs:
 
       - name: Start Temporal server (background)
         run: |
-          temporal server start-dev --headless &
-          sleep 5
+          temporal server start-dev --headless & sleep 5
           
       - name: Debug token presence (safe)
         run: |
