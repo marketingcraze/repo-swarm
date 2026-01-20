@@ -32,6 +32,10 @@ jobs:
           mise exec -- pip install pydantic
           mise exec -- pip install GitPython
           mise exec -- pip install requests
+          mise exec -- pip install uv
+          mise exec -- pip install anthropic boto3
+          mise exec -- pip install anyio
+          mise exec -- pip install pytest-asyncio
     
       - name: Verify tools
         run: |
@@ -49,6 +53,7 @@ jobs:
       - name: Debug token presence (safe)
         env:
           REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
         run: |
           if [ -n "${REPOSWARM_GIT_TOKEN}" ]; then echo "REPOSWARM_GIT_TOKEN is set"; else echo "REPOSWARM_GIT_TOKEN is NOT set"; fi
@@ -56,7 +61,7 @@ jobs:
           
       - name: Generate documents
         run: |
-          mise investigate-all
-         #  mise investigate-one https://github.com/marketingcraze/PWA-DEV
+         # mise investigate-all
+           mise investigate-one https://github.com/marketingcraze/PWA-DEV
 
      
