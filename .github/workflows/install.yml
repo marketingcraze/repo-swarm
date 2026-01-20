@@ -51,18 +51,18 @@ jobs:
         run: |
           temporal server start-dev --headless & sleep 5
           
-      - name: Debug token presence (safe)
+      - name: Configure git auth for private repos
         env:
           REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
         run: |
-          if [ -n "${REPOSWARM_GIT_TOKEN}" ]; then echo "REPOSWARM_GIT_TOKEN is set"; else echo "REPOSWARM_GIT_TOKEN is NOT set"; fi
-          if [ -n "${GITHUB_TOKEN}" ]; then echo "GITHUB_TOKEN is set"; else echo "GITHUB_TOKEN is NOT set"; fi
+          git config --global url."https://x-access-token:${REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
           
       - name: Generate documents
         run: |
+         mise test-all
          # mise investigate-all
-           mise investigate-one https://github.com/marketingcraze/PWA-DEV
+         #  mise investigate-one https://github.com/marketingcraze/PWA-DEV
 
      
