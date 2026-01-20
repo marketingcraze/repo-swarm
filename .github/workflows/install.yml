@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
+      GIT_TERMINAL_PROMPT: "0"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,55 +21,40 @@ jobs:
       - name: Setup Mise
         uses: jdx/mise-action@v2
         with:
-          version: 2025.1.0        # optional, default latest
-          install: true            # runs `mise install`
-          cache: false             # enables tool caching
+          version: 2025.1.0
+          install: true
+          cache: false
 
       - name: Install Temporal CLI
-        uses: temporalio/setup-temporal@v0
-        with:
-          version: v0.12.0
-      
-      - name: Run Dependencies
-        run: |
-          mise run dev-dependencies
-          mise exec -- pip install temporalio
-          mise exec -- pip install pydantic
-          mise exec -- pip install GitPython
-          mise exec -- pip install requests
-          mise exec -- pip install uv
-          mise exec -- pip install anthropic boto3
-          mise exec -- pip install anyio
-          mise exec -- pip install pytest-asyncio
+        uses: temporalio/setup-temporal@v1
 
       - name: Configure git auth for private repos
-        env:
-          REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          gh auth status
-          git config --global credential.helper store
-          git config --global url."https://x-access-token:${REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
-          git clone https://github.com/marketingcraze/PWA-DEV
-    
+          if [ -z "${REPOSWARM_GH_PAT}" ]; then
+            echo "REPOSWARM_GH_PAT is missing"
+            exit 1
+          fi
+
+          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
+
+          # quick proof it works (no prompt)
+          git ls-remote https://github.com/marketingcraze/PWA-DEV.git HEAD
+
+      - name: Install Python deps
+        run: |
+          mise exec -- pip install -r requirements.txt
+
       - name: Verify tools
         run: |
-          ls -la
-          node --version
           python --version
           temporal --version
           git --version
 
-   #   - name: Start Temporal server (background)
-        #run: |
-  #        temporal server start-dev --headless & sleep 5
-          
-      - name: Generate documents
+      - name: Start Temporal server (background)
         run: |
-         # mise test-all
-         # mise investigate-all
-         # mise investigate-debug
-         # mise investigate-one https://github.com/marketingcraze/PWA-DEV
-         
+          temporal server start-dev --headless &
+          sleep 5
 
-     
+      - name: Run RepoSwarm (example)
+        run: |
+          mise exec -- python src/investigate_worker.py
