@@ -71,7 +71,7 @@ dev-dependencies = "uv sync"
 # Launches the Temporal development server for workflow orchestration
 # Use when: setting up local development environment, starting workflows, or testing Temporal-based functionality
 dev-server = "temporal server start-dev"
-
+dev-temporal = "temporal server start-dev"
 
 # Run the Temporal worker
 # Starts the Temporal worker process to execute workflow activities
@@ -119,6 +119,7 @@ production-workflow = "scripts/workflow.sh"
 #   mise investigate-all dry-run model claude-3-haiku-20241022  # Test configuration
 # Use when: bulk repository analysis, testing multiple repos locally, or development workflow testing
 investigate-all = "scripts/full.sh"
+# investigate-all = "ls -l"
 
 # Run single repository investigation locally for testing
 # Always uses .env.local for local testing configuration
