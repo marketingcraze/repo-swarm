@@ -44,7 +44,7 @@ jobs:
         run: |
           gh auth status
           git config --global credential.helper store
-          git config --global url."https://x-access-token:${secrets.REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://x-access-token:${REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
     
       - name: Verify tools
         run: |
