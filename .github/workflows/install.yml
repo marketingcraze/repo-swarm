@@ -36,7 +36,7 @@ jobs:
           mise exec -- pip install anthropic boto3
           mise exec -- pip install anyio
           mise exec -- pip install pytest-asyncio
-          gh auth login
+          gh auth status
     
       - name: Verify tools
         run: |
