@@ -62,7 +62,7 @@ jobs:
         run: |
          # mise test-all
          # mise investigate-all
-          mise investigate-debug
-         # mise investigate-one https://github.com/marketingcraze/PWA-DEV
+         # mise investigate-debug
+          mise investigate-one https://github.com/marketingcraze/PWA-DEV
 
      
