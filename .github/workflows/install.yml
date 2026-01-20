@@ -45,6 +45,7 @@ jobs:
           gh auth status
           git config --global credential.helper store
           git config --global url."https://x-access-token:${REPOSWARM_GIT_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git clone https://github.com/marketingcraze/PWA-DEV
     
       - name: Verify tools
         run: |
@@ -64,6 +65,6 @@ jobs:
          # mise investigate-all
          # mise investigate-debug
          # mise investigate-one https://github.com/marketingcraze/PWA-DEV
-         git clone https://github.com/marketingcraze/PWA-DEV
+         
 
      
