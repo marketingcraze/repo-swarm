@@ -35,7 +35,7 @@ jobs:
             exit 1
           fi
 
-          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 
           # quick proof it works (no prompt)
           git ls-remote https://github.com/marketingcraze/PWA-DEV.git HEAD
