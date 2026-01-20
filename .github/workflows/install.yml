@@ -38,7 +38,7 @@ jobs:
           git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 
           # quick proof it works (no prompt)
-          git ls-remote https://github.com/marketingcraze/PWA-DEV.git HEAD
+          git clone https://github.com/marketingcraze/PWA-DEV.git HEAD
 
       - name: Install Python deps
         run: |
