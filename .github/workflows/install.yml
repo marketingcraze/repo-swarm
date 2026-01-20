@@ -39,12 +39,13 @@ jobs:
 
       - name: Configure git auth for private repos
         env:
+          GITHUB_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
           REPOSWARM_GIT_TOKEN: ${{ secrets.REPOSWARM_GIT_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           gh auth status
           git config --global credential.helper store
-          # git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
     
       - name: Verify tools
         run: |
