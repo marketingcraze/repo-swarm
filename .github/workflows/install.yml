@@ -42,7 +42,8 @@ jobs:
 
       - name: Install Python deps
         run: |
-          mise exec -- pip install -r requirements.txt
+          mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+          # mise exec -- pip install -r requirements.txt
 
       - name: Verify tools
         run: |
