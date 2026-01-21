@@ -26,7 +26,7 @@ jobs:
           cache: false
 
       - name: Install Temporal CLI
-        uses: temporalio/setup-temporal@v0
+        uses: temporalio/setup-temporal@v1
 
       - name: Configure git auth for private repos
         run: |
