@@ -38,12 +38,12 @@ jobs:
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
 
           # quick proof it works (no prompt)
-          git clone https://github.com/marketingcraze/PWA-DEV.git
+          # git clone https://github.com/marketingcraze/PWA-DEV.git
 
       - name: Install Python deps
         run: |
           mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-          # mise exec -- pip install -r requirements.txt
+          mise kill
 
       - name: Verify tools
         run: |
@@ -51,10 +51,10 @@ jobs:
           temporal --version
           git --version
 
-      - name: Start Temporal server (background)
-        run: |
-          temporal server start-dev --headless &
-          sleep 5
+    #  - name: Start Temporal server (background)
+     #   run: |
+     #     temporal server start-dev --headless &
+          #sleep 5
 
       - name: Run RepoSwarm (example)
         run: |
