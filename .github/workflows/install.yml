@@ -59,4 +59,4 @@ jobs:
       - name: Run RepoSwarm (example)
         run: |
           # mise exec -- python src/investigate_worker.py
-          mise investigate-debug
+          mise investigate-one https://github.com/marketingcraze/PWA-DEV
