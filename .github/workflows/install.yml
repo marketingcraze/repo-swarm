@@ -58,4 +58,5 @@ jobs:
 
       - name: Run RepoSwarm (example)
         run: |
-          mise exec -- python src/investigate_worker.py
+          # mise exec -- python src/investigate_worker.py
+          mise investigate-debug
