@@ -9,14 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash
-
     steps:
       - name: Run RepoSwarm
+        shell: bash
         run: |
           curl https://mise.run | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          mise --version
           mise install
           mise run dev-dependencies
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
