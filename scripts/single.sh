@@ -24,6 +24,7 @@ echo "📝 Environment configured for local testing:"
 echo "   PROMPT_CONTEXT_STORAGE=${PROMPT_CONTEXT_STORAGE:-file}"
 echo "   SKIP_DYNAMODB_CHECK=${SKIP_DYNAMODB_CHECK:-true}"
 echo "   LOCAL_TESTING=${LOCAL_TESTING:-true}"
+echo "   ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}"
 echo ""
 
 uv sync
