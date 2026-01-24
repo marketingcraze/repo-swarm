@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
       GIT_TERMINAL_PROMPT: "0"
 
@@ -47,7 +48,10 @@ jobs:
           temporal --version
           git --version
 
+      - name: Set env var
+        run: echo "ANTHROPIC_API_KEY=value" >> $ANTHROPIC_API_KEY
+  
       - name: Run RepoSwarm
         run: |
-          export ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}"
+          echo $ANTHROPIC_API_KEY
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
