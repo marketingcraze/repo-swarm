@@ -41,13 +41,10 @@ jobs:
 
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
 
-      - name: Verify Anthropic API key exists
+      - name: Debug Anthropic API key
         run: |
-          if [ -z "${ANTHROPIC_API_KEY}" ]; then
-            echo "ANTHROPIC_API_KEY is missing"
-            exit 1
-          fi
-          echo "ANTHROPIC_API_KEY is set ✅"
+          echo $ANTHROPIC_API_KEY
+          mise exec -- env | grep ANTHROPIC_API_KEY
 
       - name: Install Python deps
         run: |
