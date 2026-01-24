@@ -9,8 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+
     env:
       REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       GIT_TERMINAL_PROMPT: "0"
 
     steps:
@@ -27,7 +32,22 @@ jobs:
       - name: Install Temporal CLI
         uses: temporalio/setup-temporal@v0
 
-        # git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
+      - name: Configure git auth for private repos
+        run: |
+          if [ -z "${REPOSWARM_GH_PAT}" ]; then
+            echo "REPOSWARM_GH_PAT is missing"
+            exit 1
+          fi
+
+          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
+
+      - name: Verify Anthropic API key exists
+        run: |
+          if [ -z "${ANTHROPIC_API_KEY}" ]; then
+            echo "ANTHROPIC_API_KEY is missing"
+            exit 1
+          fi
+          echo "ANTHROPIC_API_KEY is set ✅"
 
       - name: Install Python deps
         run: |
@@ -41,6 +61,4 @@ jobs:
 
       - name: Run RepoSwarm
         run: |
-          echo 'export ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}"' >> ~/.bashrc
-          source ~/.bashrc
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
