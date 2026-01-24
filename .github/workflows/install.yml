@@ -49,5 +49,5 @@ jobs:
 
       - name: Run RepoSwarm
         run: |
-          export ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          export ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
