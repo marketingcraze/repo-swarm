@@ -9,53 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash
-
-    env:
-      REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      GIT_TERMINAL_PROMPT: "0"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Mise
-        uses: jdx/mise-action@v2
-        with:
-          version: 2025.1.0
-          install: true
-          cache: false
-
-      - name: Install Temporal CLI
-        uses: temporalio/setup-temporal@v0
-
-      - name: Configure git auth for private repos
-        run: |
-          if [ -z "${REPOSWARM_GH_PAT}" ]; then
-            echo "REPOSWARM_GH_PAT is missing"
-            exit 1
-          fi
-
-          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
-
-      - name: Debug Anthropic API key
-        run: |
-          echo $ANTHROPIC_API_KEY
-          mise exec -- env | grep ANTHROPIC_API_KEY
-
-      - name: Install Python deps
-        run: |
-          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-
-      - name: Verify tools
-        run: |
-          python --version
-          temporal --version
-          git --version
-
       - name: Run RepoSwarm
         run: |
+          shell: bash
+          curl https://mise.run | sh
+          mise install
+          mise run dev-dependencies
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
