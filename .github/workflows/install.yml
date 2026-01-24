@@ -34,6 +34,7 @@ jobs:
             echo "REPOSWARM_GH_PAT is missing"
             exit 1
           fi
+          echo "REPOSWARM_GH_PAT is set ✅"
 
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
 
