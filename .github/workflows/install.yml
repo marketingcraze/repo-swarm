@@ -16,6 +16,8 @@ jobs:
           curl https://mise.run | sh
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           mise --version
+          ls -la
+          
           mise install
           mise run dev-dependencies
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
