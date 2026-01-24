@@ -11,7 +11,6 @@ jobs:
 
     env:
       REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       GIT_TERMINAL_PROMPT: "0"
 
     steps:
@@ -28,28 +27,11 @@ jobs:
       - name: Install Temporal CLI
         uses: temporalio/setup-temporal@v0
 
-      - name: Configure git auth for private repos
-        run: |
-          if [ -z "${REPOSWARM_GH_PAT}" ]; then
-            echo "REPOSWARM_GH_PAT is missing"
-            exit 1
-          fi
-          echo "REPOSWARM_GH_PAT is set ✅"
-
-          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
-
-      - name: Verify Anthropic API key exists
-        run: |
-          if [ -z "${ANTHROPIC_API_KEY}" ]; then
-            echo "ANTHROPIC_API_KEY is missing"
-            exit 1
-          fi
-          echo "ANTHROPIC_API_KEY is set ✅"
+        # git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
 
       - name: Install Python deps
         run: |
-          mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-          mise kill
+          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
 
       - name: Verify tools
         run: |
@@ -59,6 +41,6 @@ jobs:
 
       - name: Run RepoSwarm
         run: |
-          echo $ANTHROPIC_API_KEY
-          mise exec -- env | grep ANTHROPIC_API_KEY
+          echo 'export ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}"' >> ~/.bashrc
+          source ~/.bashrc
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
