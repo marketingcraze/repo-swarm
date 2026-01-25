@@ -18,13 +18,9 @@ jobs:
         run: |
           curl https://mise.run | sh
           mise run dev-dependencies
-          mise exec -- pip install temporalio
+          mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           
           mise --version
-          ls -la
-
-          #mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-          
+          ls -la          
   
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
-
