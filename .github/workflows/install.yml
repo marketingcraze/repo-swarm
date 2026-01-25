@@ -23,7 +23,7 @@ jobs:
 
           mise install
           mise run dev-dependencies
-          curl -sSf https://temporal.download/cli.sh
+          curl -sSf https://temporal.download/cli.sh | bash
           
           #mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
 
