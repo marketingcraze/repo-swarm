@@ -17,8 +17,12 @@ jobs:
         shell: bash
         run: |
           curl https://mise.run | sh
+          curl -sSf https://temporal.download/cli.sh | bash
+          
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          
           mise --version
+          temporal --version
           ls -la
           
           mise install
