@@ -13,9 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Temporal CLI
-        uses: temporalio/setup-temporal@v0
-
       - name: Run RepoSwarm
         env:
           REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
@@ -23,13 +20,14 @@ jobs:
         shell: bash
         run: |
           curl https://mise.run | sh
+          mise install
           mise run dev-dependencies
-          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+          #mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
 
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
 
-          
           mise --version
           ls -la          
   
-          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          mise investigate-one PWA-LIVE
