@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           curl https://mise.run | sh
-          curl -sSf https://temporal.download/cli.sh | bash
+          curl -sSf https://temporal.download/cli.sh
 
           mise install
           mise run dev-dependencies
