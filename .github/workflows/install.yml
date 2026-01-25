@@ -13,11 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Temporal CLI
-        run: |
-          curl -sSf https://temporal.download/cli.sh | bash
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          temporal --version
+   #   - name: Install Temporal CLI
+  #      uses: temporalio/setup-temporal@v0
 
       - name: Run RepoSwarm
         shell: bash
@@ -26,9 +23,9 @@ jobs:
           mise --version
           ls -la
 
-          mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-          mise install
-          #mise run dev-dependencies
+          #mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+          #mise install
+          mise run dev-dependencies
   
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
