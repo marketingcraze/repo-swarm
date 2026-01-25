@@ -18,7 +18,7 @@ jobs:
         run: |
           curl https://mise.run | sh
           mise run dev-dependencies
-          mise exec -- pip temporalio
+          mise exec -- pip install temporalio
           
           mise --version
           ls -la
