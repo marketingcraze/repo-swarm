@@ -22,6 +22,7 @@ jobs:
           ls -la
           
           mise install
-          mise run dev-dependencies
+          #mise run dev-dependencies
+          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
