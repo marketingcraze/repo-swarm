@@ -13,6 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Temporal CLI
+        run: |
+          curl -sSf https://temporal.download/cli.sh | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          temporal --version
+
       - name: Run RepoSwarm
         env:
           REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
@@ -23,7 +29,6 @@ jobs:
 
           mise install
           mise run dev-dependencies
-          curl -sSf https://temporal.download/cli.sh | bash
           
           #mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
 
