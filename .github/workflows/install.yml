@@ -13,19 +13,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-   #   - name: Install Temporal CLI
-  #      uses: temporalio/setup-temporal@v0
-
       - name: Run RepoSwarm
         shell: bash
         run: |
           curl https://mise.run | sh
+          mise run dev-dependencies
+          #mise exec -- pip temporalio
+          
           mise --version
           ls -la
 
           #mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-          #mise install
-          mise run dev-dependencies
+          
   
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
