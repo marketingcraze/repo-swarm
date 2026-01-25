@@ -20,13 +20,11 @@ jobs:
           curl -sSf https://temporal.download/cli.sh | bash
           
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-          
           mise --version
-          temporal --version
           ls -la
           
           mise install
           #mise run dev-dependencies
-          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+          mise exec -- pip install python-dotenv pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
