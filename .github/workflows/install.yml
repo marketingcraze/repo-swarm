@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Temporal CLI
-        shell: bash
         run: |
           curl -sSf https://temporal.download/cli.sh | bash
+          export PATH="$PATH:$HOME/.temporalio/bin"
           echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
           temporal --version
 
