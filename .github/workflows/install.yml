@@ -20,10 +20,11 @@ jobs:
         shell: bash
         run: |
           curl https://mise.run | sh
-          curl -sSf https://temporal.download/cli.sh
 
           mise install
           mise run dev-dependencies
+          curl -sSf https://temporal.download/cli.sh
+          
           #mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
 
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
