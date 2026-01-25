@@ -22,9 +22,10 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           mise --version
           ls -la
-          
+
+          mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           mise install
           #mise run dev-dependencies
-          mise exec -- pip install python-dotenv pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+  
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
 
