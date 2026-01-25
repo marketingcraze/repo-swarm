@@ -12,14 +12,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
+      - name: Install Temporal CLI
+        run: |
+          curl -sSf https://temporal.download/cli.sh | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          temporal --version
+
       - name: Run RepoSwarm
         shell: bash
         run: |
           curl https://mise.run | sh
-          curl -sSf https://temporal.download/cli.sh | bash
-          
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
           mise --version
           ls -la
 
