@@ -21,7 +21,7 @@ jobs:
         run: |
           curl https://mise.run | sh
           mise run dev-dependencies
-          mise exec -- pip install temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           
           mise --version
           ls -la          
