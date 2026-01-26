@@ -7,7 +7,8 @@ on:
 
 jobs:
   reposwarm:
-    # if: github.event.pull_request.merged == true
+    # Only run if the PR was merged (not just closed)
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     env:
@@ -17,6 +18,7 @@ jobs:
 
     steps:
       - name: Print merge info
+        shell: bash
         run: |
           echo "✅ PR merged into main"
           echo "Repo: ${{ github.repository }}"
@@ -24,18 +26,22 @@ jobs:
           echo "Merged SHA: ${{ github.event.pull_request.merge_commit_sha }}"
 
       - name: Fail fast if secrets missing
+        shell: bash
         run: |
           if [ -z "${REPOSWARM_GH_PAT}" ]; then
             echo "❌ REPOSWARM_GH_PAT is missing"
             exit 1
           fi
+
           if [ -z "${ANTHROPIC_API_KEY}" ]; then
             echo "❌ ANTHROPIC_API_KEY is missing"
             exit 1
           fi
+
           echo "✅ Secrets present"
 
       - name: Configure git auth (PAT)
+        shell: bash
         run: |
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
 
@@ -50,13 +56,15 @@ jobs:
         shell: bash
         run: |
           curl -fsSL https://mise.run | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/bin:$PATH"
           mise --version
 
       - name: Install Python deps
         working-directory: repo-swarm
         shell: bash
         run: |
+          export PATH="$HOME/.local/bin:$PATH"
           mise install
           mise exec -- pip install -U pip
           mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
@@ -65,27 +73,37 @@ jobs:
         shell: bash
         run: |
           curl -sSf https://temporal.download/cli.sh | bash
-      
+
           echo "✅ Installed temporal here:"
           ls -la "$HOME/.temporalio/bin/temporal"
-      
+
           echo "✅ Running temporal via full path:"
           "$HOME/.temporalio/bin/temporal" --version
-      
-          echo "✅ Adding to PATH for future steps"
+
+          echo "✅ Adding temporal to PATH for future steps"
           echo "$HOME/.temporalio/bin" >> "$GITHUB_PATH"
 
       - name: Start Temporal dev server (headless)
         shell: bash
         run: |
-          "$HOME/.temporalio/bin/temporal" server start-dev --headless &
+          export PATH="$HOME/.temporalio/bin:$PATH"
+          temporal server start-dev --headless &
           sleep 5
 
       - name: Run RepoSwarm investigation on PWA-LIVE
         working-directory: repo-swarm
         shell: bash
         run: |
-          echo "Checking Claude key is present..."
+          # Ensure both mise + temporal are usable inside this step (and child processes)
+          export PATH="$HOME/.temporalio/bin:$HOME/.local/bin:$PATH"
+
+          echo "✅ Tool versions:"
+          which mise
+          mise --version
+          which temporal
+          temporal --version
+
+          echo "✅ Checking Claude key is present..."
           if [ -z "$ANTHROPIC_API_KEY" ]; then
             echo "❌ Missing ANTHROPIC_API_KEY"
             exit 1
