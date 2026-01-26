@@ -6,28 +6,81 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  reposwarm:
+    # Only run if PR was merged
+    if: github.event.pull_request.merged == true
+
     runs-on: ubuntu-latest
 
+    env:
+      # RepoSwarm needs this to clone private repos + push updates
+      REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
+
+      # Needed for Claude analysis steps
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      # Avoid git prompting in CI
+      GIT_TERMINAL_PROMPT: "0"
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run RepoSwarm
-        env:
-          REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
-          GIT_TERMINAL_PROMPT: "0"
-        shell: bash
+      - name: Print merge info
         run: |
-          curl https://mise.run | sh
-          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-          curl -sSf https://temporal.download/cli.sh | bash
+          echo "✅ PR merged into main"
+          echo "Repo: ${{ github.repository }}"
+          echo "PR: #${{ github.event.pull_request.number }}"
+          echo "Merged SHA: ${{ github.event.pull_request.merge_commit_sha }}"
 
-          export PATH="$PATH:$HOME/.temporalio/bin"
+      - name: Fail fast if secrets missing
+        run: |
+          if [ -z "${REPOSWARM_GH_PAT}" ]; then
+            echo "❌ REPOSWARM_GH_PAT is missing"
+            exit 1
+          fi
+
+          if [ -z "${ANTHROPIC_API_KEY}" ]; then
+            echo "❌ ANTHROPIC_API_KEY is missing"
+            exit 1
+          fi
+
+          echo "✅ Secrets present"
+
+      - name: Configure git auth (PAT for private clones + pushes)
+        run: |
+          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
+
+      - name: Checkout RepoSwarm repo
+        uses: actions/checkout@v4
+        with:
+          repository: marketingcraze/repo-swarm
+          token: ${{ secrets.REPOSWARM_GH_PAT }}
+          path: repo-swarm
+
+      - name: Install Mise
+        run: |
+          curl -fsSL https://mise.run | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          mise --version
+
+      - name: Install Python deps (RepoSwarm worker needs these)
+        working-directory: repo-swarm
+        run: |
+          mise install
+          mise exec -- pip install -U pip
+          mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
+
+      - name: Install Temporal CLI
+        run: |
+          curl -sSf https://temporal.download/cli.sh | bash
           echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
-          
-          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"         
-          ls -la          
-  
-          # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
-          mise investigate-one PWA-DEV
+          temporal --version
+
+      - name: Start Temporal dev server (headless)
+        run: |
+          temporal server start-dev --headless &
+          sleep 5
+
+      - name: Run RepoSwarm investigation on PWA-LIVE
+        working-directory: repo-swarm
+        run: |
+          mise exec -- env | grep ANTHROPIC_API_KEY || true
+          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
