@@ -65,14 +65,20 @@ jobs:
         shell: bash
         run: |
           curl -sSf https://temporal.download/cli.sh | bash
-          export PATH="$HOME/.temporalio/bin:$PATH"
+      
+          echo "✅ Installed temporal here:"
+          ls -la "$HOME/.temporalio/bin/temporal"
+      
+          echo "✅ Running temporal via full path:"
+          "$HOME/.temporalio/bin/temporal" --version
+      
+          echo "✅ Adding to PATH for future steps"
           echo "$HOME/.temporalio/bin" >> "$GITHUB_PATH"
-          temporal --version
 
       - name: Start Temporal dev server (headless)
         shell: bash
         run: |
-          temporal server start-dev --headless &
+          "$HOME/.temporalio/bin/temporal" server start-dev --headless &
           sleep 5
 
       - name: Run RepoSwarm investigation on PWA-LIVE
