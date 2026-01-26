@@ -109,4 +109,4 @@ jobs:
             exit 1
           fi
 
-          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          mise investigate-all
