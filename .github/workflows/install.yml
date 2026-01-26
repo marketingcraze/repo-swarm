@@ -2,8 +2,8 @@ name: Trigger RepoSwarm on Merge
 
 on:
   pull_request:
-    types: [closed]
-    branches: [main]
+  push:
+
 
 jobs:
   reposwarm:
