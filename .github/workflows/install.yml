@@ -23,11 +23,10 @@ jobs:
           mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           curl -sSf https://temporal.download/cli.sh | bash
 
-          export PATH="$PATH:$HOME/.temporalio/bin"
-          echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
+          #export PATH="$PATH:$HOME/.temporalio/bin"
+          #echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
           
-          #git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
-          
+          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"         
           ls -la          
   
           # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
