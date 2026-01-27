@@ -4,7 +4,6 @@ on:
   pull_request:
   push:
 
-
 jobs:
   reposwarm:
     # Only run if the PR was merged (not just closed)
@@ -110,5 +109,5 @@ jobs:
           fi
 
           # mise investigate-all
-          # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
-          mise investigate-one PWA-DEV
+          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          # mise investigate-one PWA-DEV
