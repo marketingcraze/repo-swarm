@@ -24,8 +24,6 @@ jobs:
           mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
           curl -sSf https://temporal.download/cli.sh | bash
 
-          #export PATH="$PATH:$HOME/.temporalio/bin"
-          #echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
           export PATH="$PATH:$HOME/.temporalio/bin"
           echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
           
