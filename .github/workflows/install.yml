@@ -96,6 +96,10 @@ jobs:
           # Ensure both mise + temporal are usable inside this step (and child processes)
           export PATH="$HOME/.temporalio/bin:$HOME/.local/bin:$PATH"
 
+          # 🔑 Force strict sequential execution
+          export REPOSWARM_STRICT_MODE=true
+          export REPOSWARM_DISABLE_PARALLEL_PROMPTS=true
+          
           echo "✅ Tool versions:"
           which mise
           mise --version
