@@ -7,7 +7,6 @@ on:
 
 jobs:
   reposwarm:
-    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +14,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run RepoSwarm
-        working-directory: repo-swarm
         env:
           REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
