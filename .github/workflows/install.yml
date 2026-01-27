@@ -46,10 +46,10 @@ jobs:
 
       - name: Checkout RepoSwarm repo
         uses: actions/checkout@v4
-        with:
-          repository: marketingcraze/repo-swarm
-          token: ${{ secrets.REPOSWARM_GH_PAT }}
-          path: repo-swarm
+        #with:
+          #repository: marketingcraze/repo-swarm
+         # token: ${{ secrets.REPOSWARM_GH_PAT }}
+         # path: repo-swarm
 
       - name: Install Mise
         shell: bash
@@ -60,7 +60,7 @@ jobs:
           mise --version
 
       - name: Install Python deps
-        working-directory: repo-swarm
+        #working-directory: repo-swarm
         shell: bash
         run: |
           export PATH="$HOME/.local/bin:$PATH"
@@ -90,7 +90,7 @@ jobs:
           sleep 5
 
       - name: Run RepoSwarm investigation on PWA-LIVE
-        working-directory: repo-swarm
+        #working-directory: repo-swarm
         shell: bash
         run: |
           # Ensure both mise + temporal are usable inside this step (and child processes)
