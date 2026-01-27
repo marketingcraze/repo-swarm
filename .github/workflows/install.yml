@@ -1,117 +1,36 @@
-name: Trigger RepoSwarm on Merge
+name: CI
 
 on:
   pull_request:
   push:
+    branches: [main]
 
 jobs:
-  reposwarm:
-    # Only run if the PR was merged (not just closed)
-    #if: github.event.pull_request.merged == true
+  build:
     runs-on: ubuntu-latest
 
-    env:
-      REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      GIT_TERMINAL_PROMPT: "0"
-
     steps:
-      - name: Print merge info
-        shell: bash
-        run: |
-          echo "✅ PR merged into main"
-          echo "Repo: ${{ github.repository }}"
-          echo "PR: #${{ github.event.pull_request.number }}"
-          echo "Merged SHA: ${{ github.event.pull_request.merge_commit_sha }}"
-
-      - name: Fail fast if secrets missing
-        shell: bash
-        run: |
-          if [ -z "${REPOSWARM_GH_PAT}" ]; then
-            echo "❌ REPOSWARM_GH_PAT is missing"
-            exit 1
-          fi
-
-          if [ -z "${ANTHROPIC_API_KEY}" ]; then
-            echo "❌ ANTHROPIC_API_KEY is missing"
-            exit 1
-          fi
-
-          echo "✅ Secrets present"
-
-      - name: Configure git auth (PAT)
-        shell: bash
-        run: |
-          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
-
-      - name: Checkout RepoSwarm repo
+      - name: Checkout
         uses: actions/checkout@v4
-        #with:
-          #repository: marketingcraze/repo-swarm
-         # token: ${{ secrets.REPOSWARM_GH_PAT }}
-         # path: repo-swarm
 
-      - name: Install Mise
+      - name: Run RepoSwarm
+        env:
+          REPOSWARM_GH_PAT: ${{ secrets.REPOSWARM_GH_PAT }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GIT_TERMINAL_PROMPT: "0"
         shell: bash
         run: |
-          curl -fsSL https://mise.run | sh
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          export PATH="$HOME/.local/bin:$PATH"
-          mise --version
-
-      - name: Install Python deps
-        #working-directory: repo-swarm
-        shell: bash
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          mise install
-          mise exec -- pip install -U pip
+          curl https://mise.run | sh
           mise exec -- pip install python-dotenv temporalio pydantic GitPython requests anthropic boto3 pytest pytest-asyncio anyio
-
-      - name: Install Temporal CLI
-        shell: bash
-        run: |
           curl -sSf https://temporal.download/cli.sh | bash
 
-          echo "✅ Installed temporal here:"
-          ls -la "$HOME/.temporalio/bin/temporal"
-
-          echo "✅ Running temporal via full path:"
-          "$HOME/.temporalio/bin/temporal" --version
-
-          echo "✅ Adding temporal to PATH for future steps"
-          echo "$HOME/.temporalio/bin" >> "$GITHUB_PATH"
-
-      - name: Start Temporal dev server (headless)
-        shell: bash
-        run: |
-          export PATH="$HOME/.temporalio/bin:$PATH"
-          temporal server start-dev --headless &
-          sleep 5
-
-      - name: Run RepoSwarm investigation on PWA-LIVE
-        #working-directory: repo-swarm
-        shell: bash
-        run: |
-          # Ensure both mise + temporal are usable inside this step (and child processes)
-          export PATH="$HOME/.temporalio/bin:$HOME/.local/bin:$PATH"
-
-          # 🔑 Force strict sequential execution
-          export REPOSWARM_STRICT_MODE=true
-          export REPOSWARM_DISABLE_PARALLEL_PROMPTS=true
+          #export PATH="$PATH:$HOME/.temporalio/bin"
+          #echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
+          export PATH="$PATH:$HOME/.temporalio/bin"
+          echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
           
-          echo "✅ Tool versions:"
-          which mise
-          mise --version
-          which temporal
-          temporal --version
-
-          echo "✅ Checking Claude key is present..."
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "❌ Missing ANTHROPIC_API_KEY"
-            exit 1
-          fi
-
-          # mise investigate-all
-          mise investigate-one https://github.com/marketingcraze/PWA-LIVE
-          # mise investigate-one PWA-DEV
+          git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"         
+          ls -la          
+  
+          # mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          mise investigate-one PWA-DEV
