@@ -1,10 +1,8 @@
 {
-  "default": "https://github.com/marketingcraze/PWA-DEV",
-  "_comment": "Available types: generic, backend, frontend, mobile, infra-as-code, libraries",
   "repositories": {
-    "PWA-DEV": {
-      "url": "https://github.com/marketingcraze/PWA-DEV",
-      "description": "Lottosocial development repository",
+    "PWA-LIVE": {
+      "url": "https://github.com/marketingcraze/PWA-LIVE",
+      "description": "Lottosocial production/live repository",
       "type": "frontend"
     }
   }
