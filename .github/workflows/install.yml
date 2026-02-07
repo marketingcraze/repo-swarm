@@ -28,7 +28,13 @@ jobs:
           echo "$HOME/.temporalio/bin" >> $GITHUB_PATH
           
           git config --global url."https://x-access-token:${REPOSWARM_GH_PAT}@github.com/".insteadOf "https://github.com/"
-  
-          # mise investigate-all
+
+          # Run a specific remote repository
           mise investigate-one https://github.com/marketingcraze/PWA-LIVE
+          mise investigate-one https://github.com/marketingcraze/FIREBASE-LIVE-GEN2
+
+          # Run a specific predefined repository (prompts/repos.json)
           # mise investigate-one PWA-DEV
+
+          # Run all predefined repositories (prompts/repos.json)
+          # mise investigate-all
